@@ -25,7 +25,6 @@ const App = () => {
       <Stack.Screen name="(main)" options={{ headerShown: false }} />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="Login" options={{ headerShown: false }} />
-      <Stack.Screen name="Test" options={{ headerShown: false }} />
     </Stack>
   );
 };

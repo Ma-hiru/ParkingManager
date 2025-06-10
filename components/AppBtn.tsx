@@ -68,8 +68,6 @@ const AppBtn: FC<props> = (
       <View
         ref={AniRef}
         className={className}
-        onLayout={() => {
-        }}
         style={{
           overflow: "hidden",
           margin: "auto",
@@ -79,22 +77,31 @@ const AppBtn: FC<props> = (
         <PressFeedback minScale={minScale}>
           {
             (
-              _, handlePressIn, handlePressOut
-            ) => <Button
-              color={color}
-              style={buttonStyle}
-              onPressIn={handlePressIn}
-              onPressOut={handlePressOut}
-              onPress={onPress}
-            >
-              {
-                loading
-                  ? <Spinner size="small" color={colors.white} />
-                  : typeof children === "string"
-                    ? <Text style={{ color: colors.white }}>{children}</Text>
-                    : children
-              }
-            </Button>
+              _,
+              handlePressIn,
+              handlePressOut
+            ) => {
+              const content = () => {
+                if (loading) return <Spinner size="small" color={colors.white} />;
+                switch (typeof children) {
+                  case "string":
+                    return <Text style={{ color: colors.white }}>{children}</Text>;
+                  default:
+                    return children;
+                }
+              };
+              return (
+                <Button
+                  color={color}
+                  style={buttonStyle}
+                  onPressIn={handlePressIn}
+                  onPressOut={handlePressOut}
+                  onPress={onPress}
+                >
+                  {content()}
+                </Button>
+              );
+            }
           }
         </PressFeedback>
       </View>
