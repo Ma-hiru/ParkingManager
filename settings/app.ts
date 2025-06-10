@@ -1,0 +1,9 @@
+export const LOCAL_SECRET_KEY = "Mahiru";
+export const APP_NAME = "";
+export const APP_VERSION = "0.0.1";
+export const APP_WELCOME = ``;
+export const RES_TIMEOUT = 20000;
+export const CACHE_DIR = "cacheDir";
+export const NO_LOGIN_TIPS = "";
+export const NO_ACTIVE_TASK = "";
+export const UPLOAD_AVATAR_QUALITY = 0.5;

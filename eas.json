@@ -1,0 +1,31 @@
+{
+  "cli": {
+    "version": ">= 15.0.14",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "node": "23.10.0",
+      "autoIncrement": true,
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

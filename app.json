@@ -1,0 +1,85 @@
+{
+  "expo": {
+    "name": "停车管理",
+    "slug": "parking-manager",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/images/icons/icon.png",
+    "scheme": "parking-manager",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "需要访问您的位置以提供服务"
+      },
+      "newArchEnabled": true
+    },
+    "android": {
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.mahiru.parking.manager",
+      "newArchEnabled": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/icons/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/icons/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-secure-store",
+      "expo-video",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "允许访问相册以上传文件",
+          "cameraPermission": "允许访问相机以拍摄照片"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "assets/fonts/zihun50hao-baigetianxingti-Regular.ttf",
+            "assets/fonts/FlyFlowerSong-Regular.ttf"
+          ]
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": false
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "eaa55e22-9f5e-4bf7-a8e5-77e375a56d74"
+      }
+    },
+    "owner": "mahiru"
+  }
+}
