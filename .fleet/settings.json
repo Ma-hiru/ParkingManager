@@ -1,0 +1,5 @@
+{
+    "editor.formatOnSave": true,
+    "gradle.autoImportOnSave": false,
+    "excluded": []
+}

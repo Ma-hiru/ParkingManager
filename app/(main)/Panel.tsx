@@ -1,12 +1,19 @@
-import { FC,memo } from "react";
+import { FC, memo } from "react";
 import { Text, View } from "react-native";
+import AppBtn from "@/components/AppBtn";
+import { usePages } from "@/hooks/usePages";
+
 type props = object;
 
 const Panel: FC<props> = () => {
+  const Pages = usePages();
   return (
     <>
       <View className="flex-1 justify-center items-center">
         <Text>Panel</Text>
+        <AppBtn onPress={Pages.set("/Login", "FN")}>
+          Login
+        </AppBtn>
       </View>
     </>
   );
