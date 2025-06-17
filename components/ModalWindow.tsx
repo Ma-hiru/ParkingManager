@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/modal";
 import { Text } from "@/components/ui/text";
 import { Icon, CloseIcon } from "@/components/ui/icon";
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, memo } from "react";
 import { MyState } from "@/hooks/useMyState";
 import { Log } from "@/utils/logger";
 
@@ -81,4 +81,4 @@ const ModalWindow: FC<props> = ({ show, children, title, confirm, cancel }) => {
     </Modal>
   );
 };
-export default ModalWindow;
+export default memo(ModalWindow);

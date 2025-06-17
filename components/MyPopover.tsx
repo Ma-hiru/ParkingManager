@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, memo, useCallback, useEffect, useRef, useState } from "react";
 import { InteractionManager, StyleProp, View, ViewStyle } from "react-native";
 import { useMyState } from "@/hooks/useMyState";
 import arrowDown from "@/assets/images/arrow_down.svg";
@@ -96,4 +96,4 @@ const MyPopover: FC<props> = ({ children, options, containerStyle, open = false 
     </>
   );
 };
-export default MyPopover;
+export default memo(MyPopover);

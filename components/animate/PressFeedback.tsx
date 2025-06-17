@@ -1,4 +1,4 @@
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode, useRef, memo } from "react";
 import { View, CustomAnimation } from "react-native-animatable";
 
 import {
@@ -89,4 +89,4 @@ const PressFeedback: FC<props> = (
     </>
   );
 };
-export default PressFeedback;
+export default memo(PressFeedback);

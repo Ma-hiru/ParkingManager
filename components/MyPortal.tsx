@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, memo } from "react";
 import { Portal } from "@/components/ui/portal";
 import { StyleSheet, Animated, Text, StyleProp, ViewStyle, TextStyle } from "react-native";
 import { Card } from "@/components/ui/card";
@@ -42,7 +42,7 @@ const MyPortal: FC<props> = ({ visible, text, containerStyle, textStyle }) => {
     </>
   );
 };
-export default MyPortal;
+export default memo(MyPortal);
 const styles = StyleSheet.create({
   container: {
     width: 100,

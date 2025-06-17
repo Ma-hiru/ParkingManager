@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 
 type props = object;
 
@@ -8,4 +8,4 @@ const Logo: FC<props> = () => {
     </>
   );
 };
-export default Logo;
+export default memo(Logo);
