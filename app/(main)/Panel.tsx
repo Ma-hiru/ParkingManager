@@ -1,5 +1,5 @@
 import { FC, memo } from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import AppBtn from "@/components/AppBtn";
 import { usePages } from "@/hooks/usePages";
 
@@ -9,7 +9,7 @@ const Panel: FC<props> = () => {
   const Pages = usePages();
   return (
     <>
-      <View className="flex-1 justify-center items-center">
+      <View style={ContainerStyle}>
         <Text>Panel</Text>
         <AppBtn onPress={Pages.set("/Login", "FN")}>
           Login
@@ -20,3 +20,10 @@ const Panel: FC<props> = () => {
 };
 // noinspection JSUnusedGlobalSymbols
 export default memo(Panel);
+const {
+  ContainerStyle
+} = StyleSheet.create({
+  ContainerStyle: {
+    flex: 1,
+  }
+} as const);

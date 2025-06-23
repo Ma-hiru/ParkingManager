@@ -19,6 +19,7 @@ type props = {
   ) => ReactNode) | ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   minScale?: number;
+  maxScale?: number;
   className?: string;
 };
 
@@ -28,6 +29,7 @@ const PressFeedback: FC<props> = (
     children,
     containerStyle,
     minScale = 0.95,
+    maxScale = 1,
     onLongPress,
     className
   }) => {
@@ -35,7 +37,7 @@ const PressFeedback: FC<props> = (
   const customZoomOut: CustomAnimation = {
     easing: "ease-in-out",
     0: {
-      transform: [{ scale: 1 }]
+      transform: [{ scale: maxScale }]
     },
     1: {
       transform: [{ scale: minScale }]
@@ -47,21 +49,19 @@ const PressFeedback: FC<props> = (
       transform: [{ scale: minScale }]
     },
     1: {
-      transform: [{ scale: 1 }]
+      transform: [{ scale: maxScale }]
     }
   };
   const handlePressIn = () => {
     const Ani = AniRef.current;
     if (Ani) {
-      console.log("in");
-      Ani.animate && Ani.animate(customZoomOut, 50);
+      Ani.animate(customZoomOut, 50).then();
     }
   };
   const handlePressOut = () => {
     const Ani = AniRef.current;
     if (Ani) {
-      console.log("out");
-      Ani.animate && Ani.animate(customZoomIn, 50);
+      Ani.animate(customZoomIn, 50).then();
     }
   };
   return (
@@ -70,7 +70,10 @@ const PressFeedback: FC<props> = (
         className={className}
         ref={AniRef}
         useNativeDriver={true}
-        style={{ backgroundColor: "transparent", ...containerStyle as object }}
+        style={{
+          backgroundColor: "transparent", ...containerStyle as object,
+          transform: [{ scale: maxScale }]
+        }}
       >
         <Pressable
           onPress={onPress}

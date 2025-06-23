@@ -6,7 +6,7 @@ import { memo, useEffect, useState } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { Log } from "@/utils/logger";
 import { BackHandler } from "react-native";
-
+import "./_permisson";
 
 const RootLayout = () => {
   const [store, setStore] = useState<typeof AppStore | undefined>(AppStore);

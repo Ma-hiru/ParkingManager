@@ -1,29 +1,36 @@
 import {
   forwardRef,
-  ForwardRefRenderFunction,
+  ForwardRefRenderFunction, ReactNode,
   useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
-  useState,
+  useState
 } from "react";
 import { View, Text, StyleSheet, PanResponder, Animated } from "react-native";
 import AppBtn from "@/components/AppBtn";
 import { Image } from "expo-image";
 import SearchIcon from "@/assets/Parking/search.svg";
 import LineIcon from "@/assets/Parking/Line.svg";
+import AppConf from "@/settings";
 
 type props = {
   slideEv?: (status: boolean) => void;
+  onSearchPress?: () => void;
+  children?: ReactNode;
 };
 type ref = {
   openCard: () => void;
   closeCard: () => void;
 };
-const TotalHeight = 150;
-const SlideHeight = 90;
-const InfoCard: ForwardRefRenderFunction<ref, props> = ({ slideEv }, ref) => {
+
+const InfoCard: ForwardRefRenderFunction<ref, props> = (
+  {
+    slideEv,
+    onSearchPress,
+    children
+  }, ref) => {
   const animatedPosition = useMemo(() => new Animated.Value(0), []);
   const [isCardOpen, setIsCardOpen] = useState(true);
   const positionRef = useRef(0);
@@ -51,15 +58,15 @@ const InfoCard: ForwardRefRenderFunction<ref, props> = ({ slideEv }, ref) => {
     Animated.timing(animatedPosition, {
       toValue: 0,
       duration: 300,
-      useNativeDriver: true,
+      useNativeDriver: true
     }).start();
   }, [animatedPosition, triggerSlideEv]);
   const closeCard = useCallback(() => {
     triggerSlideEv(false);
     Animated.timing(animatedPosition, {
-      toValue: -SlideHeight,
+      toValue: -AppConf.Theme.Parking.InfoCardSlideHeight,
       duration: 300,
-      useNativeDriver: true,
+      useNativeDriver: true
     }).start();
   }, [animatedPosition, triggerSlideEv]);
   const panResponder = useMemo(() => {
@@ -74,7 +81,7 @@ const InfoCard: ForwardRefRenderFunction<ref, props> = ({ slideEv }, ref) => {
       },
       // 手势移动时直接更新位置值
       onPanResponderMove: (_, { dy }) => {
-        if (Math.abs(dy) > SlideHeight) {
+        if (Math.abs(dy) > AppConf.Theme.Parking.InfoCardSlideHeight / 2) {
           return;
         }
         animatedPosition.setValue(-dy);
@@ -89,35 +96,34 @@ const InfoCard: ForwardRefRenderFunction<ref, props> = ({ slideEv }, ref) => {
         } else if (dy < -threshold) {
           openCard();
         }
-      },
+      }
     });
   }, [animatedPosition, openCard, closeCard]);
   const animatedStyle = useMemo(
     () => ({
       transform: [
         {
-          translateY: Animated.multiply(animatedPosition, -1),
-        },
-      ],
+          translateY: Animated.multiply(animatedPosition, -1)
+        }
+      ]
     }),
     [animatedPosition]
   );
   useImperativeHandle(ref, () => ({
     openCard,
-    closeCard,
+    closeCard
   }));
   return (
     <Animated.View style={[ContainerStyle, animatedStyle]} {...panResponder.panHandlers}>
       <Image source={LineIcon} style={LineIconStyle} />
       <View style={SearchStyle}>
-        <AppBtn containerStyle={SearchBtnStyle} onPress={openCard}>
+        <AppBtn containerStyle={SearchBtnStyle} onPress={onSearchPress}>
           <Image source={SearchIcon} style={SearchIconStyle} />
           <Text style={SearchTextStyle}>搜索停车场</Text>
         </AppBtn>
       </View>
       <View style={MainContainerStyle}>
-        <AppBtn onPress={openCard}>open</AppBtn>
-        <AppBtn onPress={closeCard}>close</AppBtn>
+        {children}
       </View>
     </Animated.View>
   );
@@ -132,40 +138,40 @@ const {
   SearchTextStyle,
   SearchBtnStyle,
   MainContainerStyle,
-  LineIconStyle,
+  LineIconStyle
 } = StyleSheet.create({
   ContainerStyle: {
     position: "absolute",
-    height: TotalHeight,
-    width: "95%",
-    padding: 10,
-    left: "2.5%",
+    height: AppConf.Theme.Parking.InfoCardTotalHeight,
+    width: AppConf.Theme.Parking.InfoCardWidthPercent,
+    padding: AppConf.Theme.Parking.InfoCardPadding,
+    left: `${50 - AppConf.Theme.Parking.InfoCardWidth / 2}%`,
     bottom: 0,
     backgroundColor: "#fff",
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopRightRadius: 10
   },
   SearchStyle: {
     height: 40,
-    justifyContent: "center",
+    justifyContent: "center"
   },
   SearchBtnStyle: {
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    borderBottomRightRadius: 5
   },
   SearchIconStyle: {
     width: 20,
     height: 20,
-    marginRight: 5,
+    marginRight: 5
   },
   SearchTextStyle: {
-    color: "#fff",
+    color: "#fff"
   },
   MainContainerStyle: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop: AppConf.Theme.Parking.InfoCardPadding
   },
   LineIconStyle: {
     position: "absolute",
@@ -173,6 +179,6 @@ const {
     height: 50,
     top: -35,
     left: "50%",
-    transform: [{ translateX: -25 }],
-  },
+    transform: [{ translateX: -20 }]
+  }
 } as const);

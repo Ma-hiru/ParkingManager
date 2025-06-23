@@ -5,23 +5,23 @@ import {
   useImperativeHandle,
   useRef
 } from "react";
-import { View, PanResponder, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSharedValue } from "react-native-reanimated";
-import PhoneForm from "@/components/Login/EmailForm";
-import PasswordForm from "@/components/Login/PasswordForm";
+import TotalInfo from "@/components/Parking/TotalInfo";
+import SingleInfo from "@/components/Parking/SingleInfo";
 
 interface props {
   width: number;
   height: number;
+  data: [total: {}, detail: {}];
 }
 
-export interface ref {
+interface ref {
   onPressPagination: (index: number) => void;
 }
 
-const data = Array.from({ length: 2 });
-const Form: ForwardRefRenderFunction<ref, props> = ({ width, height }, ref) => {
+const InfoContent: ForwardRefRenderFunction<ref, props> = ({ height, width, data }, ref) => {
   const CarouseRef = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = useCallback((index: number) => {
@@ -35,7 +35,7 @@ const Form: ForwardRefRenderFunction<ref, props> = ({ width, height }, ref) => {
   }));
   return (
     <>
-      <View {...panResponder.panHandlers} style={ContainerStyle}>
+      <View style={ContainerStyle}>
         <Carousel
           ref={CarouseRef}
           loop={true}
@@ -44,26 +44,20 @@ const Form: ForwardRefRenderFunction<ref, props> = ({ width, height }, ref) => {
           scrollAnimationDuration={500}
           data={data}
           onProgressChange={progress}
-          renderItem={({ index }) => (
-            index === 0 ? <PhoneForm /> : <PasswordForm />
-          )}
-        />
+          renderItem={({ item, index }) => (
+            index === 0 ? <TotalInfo /> : <SingleInfo />
+          )} />
       </View>
     </>
   );
 };
-export default forwardRef(Form);
+export default forwardRef(InfoContent);
+
 const { ContainerStyle } = StyleSheet.create({
   ContainerStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-  }
-} as const);
-const panResponder = PanResponder.create({
-  onStartShouldSetPanResponder: () => true,
-  onMoveShouldSetPanResponder: (_, { dx }) => {
-    return Math.abs(dx) > 10;
-  },
-  onPanResponderMove: () => {
-  }
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center"
+  } as const
 });

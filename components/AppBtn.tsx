@@ -1,5 +1,5 @@
-import { FC, memo, ReactNode, useEffect, useRef } from "react";
-import { StyleProp, Text, ViewStyle } from "react-native";
+import { FC, memo, ReactNode, useEffect, useMemo, useRef } from "react";
+import { DimensionValue, StyleProp, Text, ViewStyle } from "react-native";
 import { Button } from "@rneui/themed";
 import colors from "tailwindcss/colors";
 import { Spinner } from "@/components/ui/spinner";
@@ -18,30 +18,11 @@ type props = {
   fullWidth?: number;
   duration?: number;
   minScale?: number;
+  maxScale?: number;
+  minLoadingWidth?: DimensionValue;
+  maxLoadingWidth?: DimensionValue;
 }
 
-const loadInAni: CustomAnimation = {
-  easing: "ease-in-out",
-  0: {
-    width: "100%",
-    borderRadius: 0
-  },
-  1: {
-    width: "15%",
-    borderRadius: 999
-  }
-};
-const loadOutAni: CustomAnimation = {
-  easing: "ease-in-out",
-  0: {
-    width: "15%",
-    borderRadius: 999
-  },
-  1: {
-    width: "100%",
-    borderRadius: 0
-  }
-};
 const AppBtn: FC<props> = (
   {
     children,
@@ -52,17 +33,41 @@ const AppBtn: FC<props> = (
     color = AppConf.Theme.ThemeColor,
     loading = false,
     duration = 200,
-    minScale = 0.95
+    minScale = 0.95,
+    maxScale = 1,
+    minLoadingWidth = "15%",
+    maxLoadingWidth = "100%"
   }) => {
   const AniRef = useRef<View>(null);
-
+  const loadInAni: CustomAnimation = useMemo(() => ({
+    easing: "ease-in-out",
+    0: {
+      width: maxLoadingWidth,
+      borderRadius: 0
+    },
+    1: {
+      width: minLoadingWidth,
+      borderRadius: 999
+    }
+  }), [maxLoadingWidth, minLoadingWidth]);
+  const loadOutAni: CustomAnimation = useMemo(() => ({
+    easing: "ease-in-out",
+    0: {
+      width: minLoadingWidth,
+      borderRadius: 999
+    },
+    1: {
+      width: maxLoadingWidth,
+      borderRadius: 0
+    }
+  }), [maxLoadingWidth, minLoadingWidth]);
   useEffect(() => {
     const Ani = AniRef.current;
     if (Ani) {
       loading && Ani.animate(loadInAni, duration);
       !loading && Ani.animate(loadOutAni, duration);
     }
-  }, [duration, loading]);
+  }, [duration, loadInAni, loadOutAni, loading]);
   return (
     <>
       <View
@@ -74,7 +79,7 @@ const AppBtn: FC<props> = (
           backgroundColor: "transparent",
           ...containerStyle as object
         }}>
-        <PressFeedback minScale={minScale}>
+        <PressFeedback minScale={minScale} maxScale={maxScale}>
           {
             (
               _,
