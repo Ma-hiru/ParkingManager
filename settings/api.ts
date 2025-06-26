@@ -1,20 +1,7 @@
-import localStore from "@/utils/localStore";
-
 /** baseURL */
-const WEATHER_URL = "https://shiina-mahiru.cn/weatherIcon";
-export const DEFAULT_BASE_URL = "https://abc.renmen321.cn:23451";
-export let baseUrl = DEFAULT_BASE_URL;
-localStore.getItem("baseUrl").then((data) => {
-  if (data !== "") {
-    baseUrl = data;
-  } else {
-    localStore.setItem("baseUrl", DEFAULT_BASE_URL).then();
-  }
-});
-export const ChangeAppBaseUrl = async (url: string) => {
-  baseUrl = url;
-  await localStore.setItem("baseUrl", url);
-};
+export const DEFAULT_BASE_URL = "https://renmen321.cn:8080";
+export const baseUrl = DEFAULT_BASE_URL;
+
 export enum tokenTypePrefix {
   /** Basic */
   Basic = "Basic ",
@@ -23,20 +10,21 @@ export enum tokenTypePrefix {
   /** NonePrefix */
   None = ""
 }
-export const tokenPrefix = tokenTypePrefix.None;
-export const enum API {
 
+export const tokenPrefix = tokenTypePrefix.None;
+
+export const enum API {
+  /** User */
+  PasswordLogin = "/api/user/loginByUsername",
+  EmailLogin = "/api/user/loginByEmail",
+  SendCode = "/api/user/sendCode",
+  Register = "/api/user/register",
+  UpdateAvatar = "/api/user/update",
+
+/* Pay */
+GetPayCode = "/api/order/payByAlipay",
+  GetPayStatus = "/api/order/",
+  GetPayRecords = "/api/order/user/",
+  /* Parking */
+  GetParkingList = "/api/parkingQuery/pageLotAll",
 }
-export const GetWeatherIconUrl = (iconIndex: string | null | undefined, style: "fill" | "line", color: "white" | "black", defaultIcon: number) => {
-  const prefix = WEATHER_URL + `/${color}/`;
-  const suffix = `${style === "fill" ? "-fill" : ""}.svg`;
-  const defaultUrl = prefix + defaultIcon + suffix;
-  if (iconIndex === null || iconIndex === undefined) {
-    return defaultUrl;
-  }
-  const id = Number(iconIndex);
-  if (Number.isNaN(id)) {
-    return defaultUrl;
-  }
-  return prefix + id + suffix;
-};

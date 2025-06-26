@@ -1,6 +1,8 @@
 import { FC, memo, useMemo } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { View as AniView } from "react-native-animatable";
+import LogoIcon from "@/assets/tabs/parking.select.svg";
+import { Image } from "expo-image";
 
 interface props {
   formType: number;
@@ -19,20 +21,22 @@ const Logo: FC<props> = ({ formType }) => {
   const subTitle = useMemo(() => {
     if (formType === 0) {
       return "密码登录";
-    } else {
+    } else if (formType === 1) {
       return "邮箱登录";
+    } else {
+      return "注册账号";
     }
   }, [formType]);
 
 
   return (
     <View style={ContainerStyle}>
-      <View style={LogoStyle}>
-        <Text style={TextStyle}>LOGO</Text>
-      </View>
       <AniView key={formType} style={TitleStyle} animation={ShowAni}>
         <Text style={SubTitleStyle}>{subTitle}</Text>
       </AniView>
+      <View style={LogoStyle}>
+        <Image source={LogoIcon} style={{ width: 50, height: 50 }} />
+      </View>
     </View>
   );
 };
@@ -40,7 +44,6 @@ export default memo(Logo);
 const { width: windowWidth } = Dimensions.get("window");
 const {
   ContainerStyle,
-  TextStyle,
   LogoStyle,
   TitleStyle,
   SubTitleStyle
@@ -53,13 +56,16 @@ const {
   },
   TextStyle: {
     textAlign: "left",
-    fontSize: 24,
-    fontWeight: "bold"
+    fontSize: 16,
+    fontWeight: "bold",
+    marginTop: 5
   },
-  LogoStyle: {},
+  LogoStyle: {
+    alignItems: "flex-start"
+  },
   TitleStyle: {},
   SubTitleStyle: {
-    fontSize: 16,
-    fontWeight: "normal"
+    fontSize: 20,
+    fontWeight: "bold"
   }
 } as const);

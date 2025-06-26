@@ -34,13 +34,13 @@ const SearchInput: FC<props> = ({ value, onChangeText }) => {
 export default memo(SearchInput);
 const screenWidth = Dimensions.get("window").width;
 const SearchBtnWidth = 50;
-const InputWidth = screenWidth - 30 - SearchBtnWidth;
+const InputWidth = screenWidth - 35 - SearchBtnWidth;
 const {
   ContainerStyle,
   SearchBtnStyle
 } = StyleSheet.create({
   ContainerStyle: {
-    padding: 10,
+    padding: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

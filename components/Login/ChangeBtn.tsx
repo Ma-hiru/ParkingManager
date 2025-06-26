@@ -1,28 +1,62 @@
-import { FC, memo } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
+import { Button, ButtonText } from "@/components/ui/button";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { Button } from "@/components/ui/button";
 import { Icon, LockIcon, MailIcon } from "@/components/ui/icon";
+import { Divider } from "@/components/ui/divider";
 import PressFeedback from "@/components/animate/PressFeedback";
+import { useImmer } from "use-immer";
 
 interface props {
-  changeForm: () => void;
+  setFormType: (index: number) => void;
   formType: number;
 }
 
-const ChangeBtn: FC<props> = ({ changeForm, formType }) => {
+const ChangeBtn: FC<props> = ({ setFormType, formType }) => {
+  const [BtnState, setBtnState] = useImmer({
+    Icon: LockIcon as typeof LockIcon,
+    Text: "账号密码登录",
+    Current: 0
+  });
+  useEffect(() => {
+    switch (formType) {
+      case 1:
+        setBtnState((draft) => {
+          draft.Icon = LockIcon;
+          draft.Text = "账号密码登录";
+          draft.Current = 1;
+        });
+        break;
+      case 0:
+        setBtnState((draft) => {
+          draft.Icon = MailIcon;
+          draft.Text = "邮箱登录";
+          draft.Current = 0;
+        });
+        break;
+    }
+  }, [formType, setBtnState]);
   return (
     <>
-      <PressFeedback containerStyle={ContainerStyle} minScale={0.95} onPress={changeForm}>
-        <View style={IconStyle}>
-          <Icon as={formType === 0 ? LockIcon : MailIcon} size={"xl"} />
-        </View>
-        <Text style={TextStyle}>
-          {
-            formType === 0 ?
-              "账号密码登录" : "邮箱登录"
-          }
-        </Text>
-      </PressFeedback>
+      <View style={ContainerStyle}>
+        <PressFeedback
+          minScale={0.95}
+          pressValue={BtnState.Current === 0 ? 1 : 0}
+          onPressValue={setFormType}
+        >
+          <View style={IconStyle}>
+            <Icon as={BtnState.Icon} size={"xl"} />
+          </View>
+          <Text style={TextStyle}>
+            {BtnState.Text}
+          </Text>
+        </PressFeedback>
+        <Divider style={{ margin: 5 }} />
+        <Button variant={"link"} style={{ height: "auto" }} onPress={() => setFormType(2)}>
+          <ButtonText style={{ fontSize: 12, fontWeight: "normal" }}>
+            没有账号?
+          </ButtonText>
+        </Button>
+      </View>
     </>
   );
 };
@@ -35,7 +69,7 @@ const {
 } = StyleSheet.create({
   ContainerStyle: {
     position: "absolute",
-    bottom: windowHeight * 0.06
+    bottom: windowHeight * 0.02
   },
   IconStyle: {
     marginBottom: 5,
@@ -44,6 +78,7 @@ const {
   TextStyle: {
     fontSize: 14,
     color: "#000",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    textAlign: "center"
   }
 } as const);

@@ -1,19 +1,14 @@
 import { FC, memo } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import AppBtn from "@/components/AppBtn";
-import { usePages } from "@/hooks/usePages";
+import { StyleSheet, View } from "react-native";
+import UserInfo from "@/components/Panel/UserInfo";
+import Options from "@/components/Panel/Options";
 
-type props = object;
-
-const Panel: FC<props> = () => {
-  const Pages = usePages();
+const Panel: FC<object> = () => {
   return (
     <>
       <View style={ContainerStyle}>
-        <Text>Panel</Text>
-        <AppBtn onPress={Pages.set("/Login", "FN")}>
-          Login
-        </AppBtn>
+        <UserInfo />
+        <Options />
       </View>
     </>
   );
@@ -24,6 +19,6 @@ const {
   ContainerStyle
 } = StyleSheet.create({
   ContainerStyle: {
-    flex: 1,
+    flex: 1
   }
 } as const);

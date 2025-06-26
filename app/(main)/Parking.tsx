@@ -1,5 +1,5 @@
 import { FC, memo, useCallback, useEffect, useRef } from "react";
-import { View, StatusBar, Dimensions } from "react-native";
+import { View, StatusBar, Dimensions, StyleSheet } from "react-native";
 import Map from "@/components/map/Map";
 import InfoCard from "@/components/Parking/InfoCard";
 import InfoContent from "@/components/Parking/InfoContent";
@@ -7,6 +7,7 @@ import AppConf from "@/settings";
 import { useReactive } from "ahooks";
 import { useFocusEffect, useNavigation } from "expo-router";
 import { ExitApp } from "@/utils/exitAPP";
+import { usePages } from "@/hooks/usePages";
 
 const Parking: FC<object> = () => {
   const navigation = useNavigation();
@@ -14,16 +15,11 @@ const Parking: FC<object> = () => {
   const MapRef = useRef<Map.ref>(null);
   const CardRef = useRef<InfoCard.ref>(null);
   const ContentRef = useRef<InfoContent.ref>(null);
+  const Pages = usePages();
   const changeNumber = useRef(0);
   const onSearchPress = useCallback(() => {
-    // CardRef.current?.closeCard();
-    ContentRef.current?.onPressPagination(changeNumber.current);
-    if (changeNumber.current === 0) {
-      changeNumber.current = 1;
-    } else {
-      changeNumber.current = 0;
-    }
-  }, []);
+    Pages.set("/SearchParking", "MOVE");
+  }, [Pages]);
   const contentData = useReactive({
     totalData: {},
     detailData: {}
@@ -34,7 +30,7 @@ const Parking: FC<object> = () => {
   return (
     <>
       <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"transparent"} />
-      <View style={{ flex: 1, position: "relative" }}>
+      <View style={ContainerStyle}>
         <Map ref={MapRef} />
         <InfoCard ref={CardRef} onSearchPress={onSearchPress}>
           <InfoContent
@@ -51,6 +47,11 @@ const Parking: FC<object> = () => {
 // noinspection JSUnusedGlobalSymbols
 export default memo(Parking);
 
+const {
+  ContainerStyle
+} = StyleSheet.create({
+  ContainerStyle: { flex: 1, position: "relative" }
+} as const);
 const { width: screenWidth } = Dimensions.get("window");
 const InfoContentWidth =
   screenWidth * AppConf.Theme.Parking.InfoCardWidth / 100

@@ -1,10 +1,10 @@
 import axios from "axios";
 import AppConf from "@/settings";
-import { userActions, AppStore } from "@/stores";
+import RootState, { userActions } from "@/stores";
 import { Log } from "@/utils/logger";
 
 const { setToken } = userActions;
-const { dispatch } = AppStore;
+const { dispatch } = RootState;
 
 /** axios实例 */
 const request = axios.create({
@@ -12,7 +12,7 @@ const request = axios.create({
 });
 /** 请求拦截器 */
 request.interceptors.request.use(config => {
-  const { token } = AppStore.getState().userStore;
+  const { token } = RootState.getState().userStore;
   config.headers.Authorization = AppConf.tokenPrefix + token;
   if (config.url) {
     if (!(config.url.startsWith("http")))

@@ -1,5 +1,6 @@
-import { FC, memo, ReactNode } from "react";
+import { FC, memo, ReactNode, useMemo } from "react";
 import {
+  ColorValue,
   StatusBar,
   StatusBarStyle,
   StyleProp,
@@ -22,7 +23,9 @@ interface props {
   containerStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<TextStyle>;
   fill?: boolean;
-  barStyle?: StatusBarStyle | null | undefined;
+  barStyle?: StatusBarStyle | null;
+  barColor?: ColorValue;
+  background?: boolean;
 }
 
 const Header: FC<props> = (
@@ -32,23 +35,24 @@ const Header: FC<props> = (
     containerStyle,
     titleStyle,
     fill = true,
-    barStyle = "dark-content"
+    barStyle = "dark-content",
+    barColor = "transparent",
+    background = true
   }) => {
   const { topInset } = useSafeArea();
   const Page = usePages();
   useNavigation();
+  const Styles = useMemo(() => [
+    ContainerStyle,
+    { paddingTop: topInset },
+    containerStyle,
+    !fill && NoFillStyle
+  ], [containerStyle, fill, topInset]);
   return (
     <>
-      <StatusBar translucent={true} barStyle={barStyle} backgroundColor={"transparent"} />
+      <StatusBar translucent={true} barStyle={barStyle} backgroundColor={barColor} />
       <View className="shadow-lg"
-            style={[
-              {
-                ...ContainerStyle,
-                paddingTop: topInset,
-                ...containerStyle as object
-              },
-              !fill && NoFillStyle
-            ]}>
+            style={Styles}>
         {
           back && <PressFeedback
             onPress={Page.back}

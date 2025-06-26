@@ -1,5 +1,5 @@
 import { FC, memo } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Image } from "expo-image";
 import filterIcon from "@/assets/SearchParking/filter.svg";
 import AppConf from "@/settings";

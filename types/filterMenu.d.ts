@@ -1,5 +1,5 @@
 interface FilterOptions {
-  type: "distance" | "price" | "blank" | "total";
+  type: "remainingSpaces" | "price";
   sort: "asc" | "desc";
 }
 

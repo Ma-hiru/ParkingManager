@@ -6,21 +6,12 @@ import {
   useRef
 } from "react";
 import { View, PanResponder, StyleSheet } from "react-native";
-import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import Carousel, { CarouselRenderItem, ICarouselInstance } from "react-native-reanimated-carousel";
 import { useSharedValue } from "react-native-reanimated";
-import PhoneForm from "@/components/Login/EmailForm";
+import EmailForm from "@/components/Login/EmailForm";
 import PasswordForm from "@/components/Login/PasswordForm";
+import RegisterForm from "@/components/Login/RegisterForm";
 
-interface props {
-  width: number;
-  height: number;
-}
-
-export interface ref {
-  onPressPagination: (index: number) => void;
-}
-
-const data = Array.from({ length: 2 });
 const Form: ForwardRefRenderFunction<ref, props> = ({ width, height }, ref) => {
   const CarouseRef = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
@@ -44,19 +35,18 @@ const Form: ForwardRefRenderFunction<ref, props> = ({ width, height }, ref) => {
           scrollAnimationDuration={500}
           data={data}
           onProgressChange={progress}
-          renderItem={({ index }) => (
-            index === 0 ? <PhoneForm /> : <PasswordForm />
-          )}
+          renderItem={renderItem}
         />
       </View>
     </>
   );
 };
 export default forwardRef(Form);
+
 const { ContainerStyle } = StyleSheet.create({
   ContainerStyle: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   }
 } as const);
 const panResponder = PanResponder.create({
@@ -67,3 +57,27 @@ const panResponder = PanResponder.create({
   onPanResponderMove: () => {
   }
 });
+const data = Array.from({ length: 3 });
+const renderItem: CarouselRenderItem<unknown> = ({ index }) => {
+  switch (index) {
+    case 0:
+      return <PasswordForm />;
+    case 1:
+      return <EmailForm />;
+    case 2:
+      return <RegisterForm />;
+    default:
+      return <></>;
+  }
+};
+
+
+interface props {
+  width: number;
+  height: number;
+}
+
+export interface ref {
+  onPressPagination: (index: number) => void;
+}
+

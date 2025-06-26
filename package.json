@@ -49,6 +49,7 @@
     "@react-aria/utils": "3.28.1",
     "@react-native-aria/checkbox": "0.2.9",
     "@react-native-aria/interactions": "0.2.15",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-masked-view/masked-view": "^0.3.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
@@ -99,6 +100,7 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "react-redux": "^9.2.0",
+    "redux-persist": "^6.0.0",
     "tailwindcss": "3.4.17",
     "use-immer": "^0.11.0",
     "uuid": "^11.1.0"

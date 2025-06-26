@@ -1,14 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppStoreState } from "@/stores";
+import { RootStateType } from "@/stores";
+import AppConf from "@/settings";
 
-interface initialType {
-  token: string;
+interface initialType extends UserProfile {
 }
 
 const userSlice = createSlice({
   name: "userStore",
   initialState: {
-    token: "Mahiru"
+    token: "",
+    username: "",
+    email: "",
+    avatar: "",
+    userId: 0
   } satisfies initialType,
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
@@ -16,9 +20,20 @@ const userSlice = createSlice({
     },
     setLogout: (state) => {
       state.token = "";
+      state.username = "";
+      state.email = "";
+      state.avatar = "";
+    },
+    setLogin: (state, action: PayloadAction<initialType>) => {
+      state.token = action.payload.token;
+      state.username = action.payload.username;
+      state.email = action.payload.email;
+      state.avatar = AppConf.baseUrl + "/api" + action.payload.avatar;
+
+      state.userId = action.payload.userId;
     }
   }
 });
 export const userReducer = userSlice.reducer;
-export const userSelector = (root: AppStoreState) => root.userStore;
+export const userSelector = (root: RootStateType) => root.userStore;
 export const userActions = userSlice.actions;

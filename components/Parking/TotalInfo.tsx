@@ -6,21 +6,35 @@ import totalIcon from "@/assets/Parking/total.svg";
 import { Image } from "expo-image";
 import PressFeedback from "@/components/animate/PressFeedback";
 import { usePages } from "@/hooks/usePages";
+import { useAppSelector } from "@/stores";
+import { parkingSelector } from "@/stores/slice/parkingSlice";
+import { Log } from "@/utils/logger";
 
 const TotalInfo: FC<object> = () => {
   const Pages = usePages();
+  const {
+    parkingLotList,
+    mostSpaces,
+    mostSpacesItem,
+    mostSpacesIndex
+  } = useAppSelector(parkingSelector);
   const gotoSearchPage = useCallback(() => {
     Pages.set("/SearchParking", "MOVE");
   }, [Pages]);
   const gotoDetailPage = useCallback(() => {
+    if (!mostSpacesItem) {
+      Log.Toast("暂无数据", "LONG", "BOTTOM");
+      return;
+    }
     Pages.set({
       pathname: "/Detail",
       params: {
-        title: "Test",
-        id: "test"
+        title: mostSpacesItem.parkingName,
+        id: mostSpacesItem.parkingLotId.toString(),
+        index: mostSpacesIndex.toString()
       } satisfies DetailRouteParams
     }, "MOVE");
-  }, [Pages]);
+  }, [Pages, mostSpacesIndex, mostSpacesItem]);
   return (
     <>
       <View style={ContainerStyle}>
@@ -28,7 +42,7 @@ const TotalInfo: FC<object> = () => {
           <View style={ItemStyle}>
             <Image source={totalIcon} style={IconStyle} />
             <View>
-              <Text style={NumStyle}>123</Text>
+              <Text style={NumStyle}>{parkingLotList.length || "-"}</Text>
               <Divider style={DividerStyle} />
               <Text style={TitleStyle}>总数</Text>
             </View>
@@ -38,9 +52,9 @@ const TotalInfo: FC<object> = () => {
           <View style={ItemStyle}>
             <Image source={spotIcon} style={[IconStyle, { width: 36, height: 36 }]} />
             <View>
-              <Text style={NumStyle}>123</Text>
+              <Text style={NumStyle}>{mostSpaces || "-"}</Text>
               <Divider style={DividerStyle} />
-              <Text style={TitleStyle}>最近余位</Text>
+              <Text style={TitleStyle}>最多余位</Text>
             </View>
           </View>
         </PressFeedback>
